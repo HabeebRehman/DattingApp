@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class Userscontroller : Controller
+    public class Userscontroller : BaseApiController
     {
         private readonly DataContext _context;
 
@@ -22,18 +23,17 @@ namespace API.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>>GetUsers()
         {
             return await _context.users.ToListAsync();
             
         }
+      
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<AppUser>>GetUsers(int id)
         {
             return await _context.users.FindAsync(id);
@@ -42,10 +42,6 @@ namespace API.Controllers
 
        
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View("Error!");
-        }
+    
     }
 }

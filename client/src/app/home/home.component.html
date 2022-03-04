@@ -14,7 +14,7 @@
 <div class="container" *ngIf="RegisterMode" >
     <div class="row justify-content-center">
         <div class="col-4">
-            <app-register [userFromHomeComponent]="users" (CancelRegister)="CancelRegistration($event)" ></app-register>
+            <app-register (CancelRegister)="CancelRegistration($event)" ></app-register>
 
         </div>
     </div>

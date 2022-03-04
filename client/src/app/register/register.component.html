@@ -5,11 +5,11 @@
         <input type="text" class="form-control mt-2" name="username" [(ngModel)]="model.userName" >
         <input type="password" class="form-control mt-2" name="password" [(ngModel)]="model.password">
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
        <select class="form-control">
            <option *ngFor="let item of userFromHomeComponent" [value]="item.userName">{{item.userName}}</option>
        </select>
-    </div>
+    </div> -->
     <div class="form-group text-center">
         <button class="btn btn-success mr-2" type="submit">Register</button>
         <button class="btn btn-default mr-2" (click)="cancel()" type="button">Cancel</button>

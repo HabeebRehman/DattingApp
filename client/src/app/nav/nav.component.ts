@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Toast, ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { User } from '_Model/User';
 import { AccountService } from '_Services/account.service';
@@ -15,7 +17,7 @@ export class NavComponent implements OnInit {
   color="black";
  
   
-  constructor(public accountService:AccountService) { }
+  constructor(public accountService:AccountService, private router:Router, private toaster:ToastrService) { }
 
   ngOnInit(): void {
   
@@ -27,9 +29,12 @@ export class NavComponent implements OnInit {
     (Response=>
       {
         console.log(Response);
-      
+        this.router.navigateByUrl('/members');
 
-      },error=>console.log(error)
+      },error=>{
+        console.log(error);
+        this.toaster.error(error.error);
+      }
     );
    
     
@@ -38,6 +43,7 @@ export class NavComponent implements OnInit {
   logout()
   {
     this.accountService.logout();
+    this.router.navigateByUrl('/');
   }
 
   

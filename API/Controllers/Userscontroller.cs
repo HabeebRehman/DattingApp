@@ -4,7 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interface;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,31 +20,45 @@ namespace API.Controllers
     [Authorize]
     public class Userscontroller : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public Userscontroller(DataContext context)
+        public readonly IMapper _mapper;
+
+        public Userscontroller(IUserRepository userRepository,IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
         
-        public async Task<ActionResult<IEnumerable<AppUser>>>GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDTO>>>GetUsers()
         {
-            return await _context.users.ToListAsync();
+            var Users= await _userRepository.GetMembersAsync();
+            //var UserToMembers=_mapper.Map<IEnumerable<MemberDTO>>(Users); not good prcatice
+            return Ok(Users);
+           
             
         }
       
-        [HttpGet("{id}")]
+        // [HttpGet("{id}")]
        
-        public async Task<ActionResult<AppUser>>GetUsers(int id)
+        // public async Task<ActionResult<AppUser>>GetUsers(int id)
+        // {
+        //     return await _userRepository.GetUserByIDAsync(id);
+            
+        // }
+
+        [HttpGet("{username}")]
+       
+        public async Task<ActionResult<MemberDTO>>GetUser(string username)
         {
-            return await _context.users.FindAsync(id);
+            var user=await _userRepository.GetMemberByUserNameAsync(username);
+           // var userToMember=_mapper.Map<MemberDTO>(user); not good prcatice
+             return  user;
             
         }
-
-       
 
     
     }

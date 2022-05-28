@@ -1,5 +1,6 @@
 
 using API.Data;
+using API.Helper;
 using API.Interface;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ namespace API.Extensions
         {
           
             services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<IUserRepository,UserRepository>();
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddDbContext<DataContext>(optios=>{
                 optios.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
-
+          
             return services;
         }
     }

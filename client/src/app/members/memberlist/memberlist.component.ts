@@ -12,18 +12,12 @@ import { MemberService } from '_Services/member.service';
 
 export class MemberlistComponent implements OnInit {
 
-  member:Member[]
+  member$:Observable<Member[]>
+
   constructor(private memberService:MemberService) { }
 
   ngOnInit(): void {
-    this.loadMembers();
-  }
-
-  loadMembers()
-  {
- 
-    this.memberService.getMembers().subscribe(member=>{this.member=member})
- 
+    this.member$=this.memberService.getMembers();
   }
 
 }

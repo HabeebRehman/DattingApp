@@ -29,6 +29,9 @@ export class AccountService {
         {
           localStorage.setItem('user',JSON.stringify(user));
           this.CurrentUserSource.next(user);
+           
+       
+
         }
       })
       )
@@ -37,8 +40,7 @@ export class AccountService {
 
   Register(model:User)
   {
-    console.log(model.UserName);
-    console.log(model.Password);
+   
     return this.http.post(this.baseUrl+'Account/register',model).pipe(map
       ((response:any)=>{
       const user=response;

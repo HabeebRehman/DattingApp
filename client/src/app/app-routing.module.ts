@@ -5,22 +5,23 @@ import { ServerErrorComponent } from './error/server-error/server-error.componen
 import { TestErrorsComponent } from './Error/test-errors/test-errors.component';
 import { HomeComponent } from './home/home.component';
 import { ListComponent } from './members/list/list.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberlistComponent } from './members/memberlist/memberlist.component';
 import { MembersComponent } from './members/members/members.component';
 import { MessagesComponent } from './members/messages/messages.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { UnsavedChangesGuard } from './_guards/Prevent-unsaved-changes.guard';
+
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
   {
-    path:'',runGuardsAndResolvers:'always',
-    canActivate:[AuthGuard],
-    children:[
+    path:'',runGuardsAndResolvers:'always',canActivate:[AuthGuard], children:[
       {path:'members',component:MemberlistComponent},
       {path:'members/:username',component:MembersComponent},
       {path:'lists',component:ListComponent},
       {path:'messages',component:MessagesComponent},
-     
+      {path:'member/edit',component:MemberEditComponent,canDeactivate: [UnsavedChangesGuard]}
     ]
   },
    // {path:'messages',component:MessagesComponent,canActivate:[AuthGuard]}, //for the single
@@ -28,6 +29,7 @@ const routes: Routes = [
   {path:'not-found',component:NotFoundComponent},
   {path:'server-error',component:ServerErrorComponent},
   {path:'**',component:NotFoundComponent,pathMatch:'full'}
+  
 ];
 
 @NgModule({

@@ -24,7 +24,7 @@ namespace API.Data
 
         public async Task<AppUser> GetUserByUserNameAsync(string username)
         {
-            return await _DataContext.users.SingleOrDefaultAsync(m=>m.UserName==username);
+            return await _DataContext.users.Include(m=>m.Photos).Where(m=>m.UserName==username).SingleOrDefaultAsync();
         }
 
         public async Task<MemberDTO> GetMemberByUserNameAsync(string username)

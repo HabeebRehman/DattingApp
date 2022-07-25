@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { Member } from '_Model/members';
+import { Photo } from '_Model/photo';
 import { User } from '_Model/User';
 import { AccountService } from '_Services/account.service';
 import { MemberService } from '_Services/member.service';
@@ -46,7 +47,7 @@ user:User;
   {
     this.memberService.getMember(this.user.userName).subscribe(member=>{
       this.member=member
-      console.log("getted user name "+this.member.knownAs)
+      console.log("getted user name "+this.member.photoUrl)
     })
   }
 
@@ -60,6 +61,8 @@ user:User;
     )
    
   }
+
+
 
 
 }

@@ -1,17 +1,46 @@
-<form #registerForm="ngForm" (ngSubmit)="register()">
+<form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && register()">
     <h2 class="text-center texp-primary">Sign Up</h2>
     <hr/>
-    <div class="form-group">
-        <input type="text" class="form-control mt-2" name="username" [(ngModel)]="model.userName" >
-        <input type="password" class="form-control mt-2" name="password" [(ngModel)]="model.password">
-    </div>
+
+        <div class="form-group">
+            <label class="controllabel" style="margin:10px">I am a</label>
+            <label class="radio-inline">
+                <input type="radio" value="male" formControlName="gender">Male
+            </label>
+            <label class="radio-inline">
+                <input type="radio" value="female" formControlName="gender" class="ml-3">female
+            </label>
+        </div>
+
+       <app-text-input [formControl]="registerForm.controls['username']" [label]="'Username'"></app-text-input>
+       <app-text-input [formControl]="registerForm.controls['password']" [type]="'Password'" [label]="'password'"></app-text-input>
+       <app-text-input [formControl]="registerForm.controls['confirmpassword']" [type]="'password'" [label]="'Confirm Password'"></app-text-input>
+       <app-text-input [formControl]="registerForm.controls['knownas']" [label]="'Known as'"></app-text-input>
+       <app-date-input [formControl]="registerForm.controls['dateofbirth']" [label]="'Date of birth'" [maxDate]="maxDate"></app-date-input>
+       <app-text-input [formControl]="registerForm.controls['city']" [label]="'City'"></app-text-input>
+       <app-text-input [formControl]="registerForm.controls['country']" [label]="'Country'"></app-text-input>
+       
+      
+        <div class="row" *ngIf="validationErrors.length>0">
+        <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">{{error}}</li>
+        </ul>
+        </div>
+       
+        
+ <!--
+
+    <p>form value = {{registerForm.value|json}}</p>
+    <p>form value = {{registerForm.status|json}}</p> -->
+
+    
     <!-- <div class="form-group">
        <select class="form-control">
            <option *ngFor="let item of userFromHomeComponent" [value]="item.userName">{{item.userName}}</option>
        </select>
     </div> -->
     <div class="form-group text-center">
-        <button class="btn btn-success mr-2" type="submit">Register</button>
+        <button class="btn btn-success mr-2" [disabled]="!registerForm.valid" type="submit">Register</button>
         <button class="btn btn-default mr-2" (click)="cancel()" type="button">Cancel</button>
     </div>
 </form>

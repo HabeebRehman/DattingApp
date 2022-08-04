@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Helper;
 using API.Interface;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +19,12 @@ namespace API.Controllers
     {
         private readonly DataContext _Context;
         public ITokenService _TokenService { get; }
-        public AccountController(DataContext Context,ITokenService tokenService)
+        private readonly IMapper _autoMapper;
+        public AccountController(DataContext Context,ITokenService tokenService, IMapper autoMapper)
         {
             this._TokenService = tokenService;
             this._Context = Context;
+            this._autoMapper=autoMapper;
         }
 
         [HttpPost("register")]
@@ -32,14 +36,14 @@ namespace API.Controllers
                 return BadRequest("User Name Exist");
             }
            
-            
+            var user=_autoMapper.Map<AppUser>(registerDTO);
             using var hmac=new HMACSHA512();
-            var user=new AppUser()
-            {
-                UserName=registerDTO.Username.ToLower(),
-                PassworHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),
-                PasswordSalt=hmac.Key
-            };
+            
+                user.UserName=registerDTO.Username.ToLower();
+                user.PassworHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password));
+                user.PasswordSalt=hmac.Key;
+
+          
 
             _Context.Add(user);
             await _Context.SaveChangesAsync();
@@ -47,7 +51,8 @@ namespace API.Controllers
             return new UserDTO
             {
                UserName=user.UserName,
-               Token=_TokenService.CreteToken(user)
+               Token=_TokenService.CreteToken(user),
+               KnownAs=user.KnownAs
             };
         }
 
@@ -69,7 +74,8 @@ namespace API.Controllers
             {
                UserName=User.UserName,
                Token=_TokenService.CreteToken(User),
-               photoUrl=User.Photos.FirstOrDefault(m=>m.IsMain)?.Url
+               photoUrl=User.Photos.FirstOrDefault(m=>m.IsMain)?.Url,
+               KnownAs=User.KnownAs
             };
         }
 

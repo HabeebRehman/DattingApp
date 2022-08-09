@@ -3,4 +3,6 @@ export interface User{
     Password:string;
     token:string;
     photoUrl:string;
+    knownAs:string;
+    gender:string;
 }

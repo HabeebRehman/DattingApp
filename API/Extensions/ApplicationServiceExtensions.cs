@@ -23,6 +23,7 @@ namespace API.Extensions
             services.AddDbContext<DataContext>(optios=>{
                 optios.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
+            services.AddScoped<LogUserActivty>();
           
             return services;
         }

@@ -52,7 +52,8 @@ namespace API.Controllers
             {
                UserName=user.UserName,
                Token=_TokenService.CreteToken(user),
-               KnownAs=user.KnownAs
+               KnownAs=user.KnownAs,
+               Gender=user.Gender
             };
         }
 
@@ -75,7 +76,8 @@ namespace API.Controllers
                UserName=User.UserName,
                Token=_TokenService.CreteToken(User),
                photoUrl=User.Photos.FirstOrDefault(m=>m.IsMain)?.Url,
-               KnownAs=User.KnownAs
+               KnownAs=User.KnownAs,
+               Gender=User.Gender
             };
         }
 
